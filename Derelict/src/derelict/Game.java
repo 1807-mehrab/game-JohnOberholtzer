@@ -6,10 +6,15 @@ public class Game {
 	private Parser parser;
 	private Gameboard gameboard;
 	public Boolean Quit = false;
+	int defaultsize = 20;
+	String playername;
 	
 	public Game() {
-		gameboard = new Gameboard(20,20);
+		parser = new Parser();
+		gameboard = new Gameboard(defaultsize,defaultsize);
 		display = new Display(gameboard);
+		playername = "Joe";
+		player = new Player(playername);
 	
 
 	}
@@ -19,6 +24,14 @@ public class Game {
 	}
 	
 	public void Scan() {
-		parser.Parse();
+		Command C = parser.Parse();
+		if (C.toString().equals("quit")){
+			System.out.println("[< EXITING PROGRAM");
+			parser.close();
+			Quit = true;
+		} else if (C.toString().equals("help")){
+			System.out.println("[< EXITING PROGRAM");
+		}
+		Cycle();
 	}
 }

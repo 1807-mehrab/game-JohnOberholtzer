@@ -5,11 +5,11 @@ public class Main {
 	public static void main(String[] args) {
 		Game G = new Game();
 		Runnable D = new DisplayRunnable(G);
-		Runnable C = new CommandRunnable(G);
+		//Runnable C = new CommandRunnable(G);
 		Thread DisplayThread = new Thread(D);
-		Thread CommandThread = new Thread(C);
+		//Thread CommandThread = new Thread(C);
 		DisplayThread.start();
-		CommandThread.start();
+		//CommandThread.start();
 
 	}
 
@@ -20,11 +20,12 @@ class DisplayRunnable implements Runnable {
 	DisplayRunnable(Game Gr){G = Gr;}
 	public void run() {
 		while (!G.Quit) {
-			G.Cycle();
+			G.Scan();
 		}
 	}
 }
 
+/*
 class CommandRunnable implements Runnable{
 	Game G;
 	CommandRunnable(Game Gr){G = Gr;}
@@ -32,5 +33,6 @@ class CommandRunnable implements Runnable{
 		while (!G.Quit) {
 			G.Scan();
 		}
-	}
+	}	
 }
+*/
