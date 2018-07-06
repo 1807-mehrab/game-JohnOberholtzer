@@ -15,6 +15,12 @@ public class Player extends Entity {
 		PlayerEquipment.put("Cutting Torch", new Equipment("Cutting Torch", 100));
 		PlayerEquipment.put("Sidearm", new Equipment("Sidearm", 100));
 		PlayerEquipment.put("Magnetic Boots", new Equipment("Magnetic Boots", 100));
+		Health = 100;
+		HealthMax = 100;
+		Oxygen = 100;
+		OxygenMax = 100;
+		AmmoMax = 50;
+		Ammo = 10;
 	}
 	
 	public void DamageP(int damage) {

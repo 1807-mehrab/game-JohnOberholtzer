@@ -6,7 +6,7 @@ public class Game {
 	private Parser parser;
 	private Gameboard gameboard;
 	public Boolean Quit = false;
-	int defaultsize = 20;
+	int defaultsize = 10;
 	String playername;
 	
 	public Game() {
@@ -20,18 +20,20 @@ public class Game {
 	}
 	
 	public void Cycle() {
-		display.Show();
+		gameboard.iterate();
+		display.Show(player);
 	}
 	
 	public void Scan() {
+		Cycle();
 		Command C = parser.Parse();
 		if (C.toString().equals("quit")){
 			System.out.println("[< EXITING PROGRAM");
 			parser.close();
 			Quit = true;
 		} else if (C.toString().equals("help")){
-			System.out.println("[< EXITING PROGRAM");
+			System.out.println("[< Available Commands: ");
+			System.out.println(parser.commandList());
 		}
-		Cycle();
 	}
 }

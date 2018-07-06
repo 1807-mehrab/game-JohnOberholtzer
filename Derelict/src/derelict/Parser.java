@@ -17,7 +17,16 @@ public class Parser {
 		validCommands.add("rescue");
 		validCommands.add("drop");
 		validCommands.add("quit");
+		validCommands.add("help");
 		
+	}
+	
+	public String commandList() {
+		String out = "";
+		for (String cmd : validCommands) {
+			out += cmd + " ";
+		}
+		return out;
 	}
 	
 	public void close() {
@@ -28,12 +37,12 @@ public class Parser {
 		String inputLine, inputWord;
 		System.out.print("[> ");
 		inputLine = reader.nextLine();
-		
+		/*
 		Scanner tk = new Scanner(inputLine);
 		if(tk.hasNext()) {
 			inputWord = tk.next();
 		}
-		
+		*/
 		if (isCommand(inputLine)){
 			System.out.println("[< Accepted: "+inputLine);
 			return new Command(inputLine);
