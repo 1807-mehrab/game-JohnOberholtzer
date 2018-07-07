@@ -31,19 +31,26 @@ public class Gameboard {
 		for (int x = 0; x < w; x++) {
 			for (int y = 0; y < h; y++) {
 				Room R = Board[x][y];
-				if(x > 0) {R.addNeighbor("L", Board[x-1][y]);}
-				if(x < w-1) {R.addNeighbor("R", Board[x+1][y]);}
-				if(y > 0) {R.addNeighbor("D", Board[x][y-1]);}
-				if(y < h-1) {R.addNeighbor("U", Board[x][y+1]);}
+				if(x > 0) {
+					if (Board[x-1][y].getID() != 2) {R.addNeighbor("left", Board[x-1][y]);}
+				}
+				if(x < w-1) {
+					if (Board[x+1][y].getID() != 2) {R.addNeighbor("right", Board[x+1][y]);}
+				}
+				if(y > 0) {
+					if (Board[x][y-1].getID() != 2) {R.addNeighbor("down", Board[x][y-1]);}
+				}
+				if(y < h-1) {
+					if (Board[x][y+1].getID() != 2) {R.addNeighbor("up", Board[x][y+1]);}
+				}
 			}
 		}
 		Random rand = new Random();
-		Room startlocation = Board[rand.nextInt(w)][rand.nextInt(h)];
-		while (startlocation.neighborCount() == 0) {
+		startlocation = Board[rand.nextInt(w)][rand.nextInt(h)];
+		while ((startlocation.neighborCount() == 0)|(startlocation.getID() != 0)) {
 			rand = new Random();
 			startlocation = Board[rand.nextInt(w)][rand.nextInt(h)];
 		}
-		
 		
 	}
 	
@@ -61,6 +68,18 @@ public class Gameboard {
 	
 	public Room getRoom(int x, int y) {
 		return Board[x][y];
+	}
+	
+	public void createEntity(int x, int y, Entity E) {
+		Board[x][y].addEntity(E);
+	}
+	
+	public boolean deleteEntity(int x, int y, Entity E) {
+		return Board[x][y].removeEntity(E);
+	}
+	
+	public int entityCount(int x, int y) {
+		return Board[x][y].entityCount();
 	}
 	
 }

@@ -5,9 +5,11 @@ import java.util.HashSet;;
 public class Parser {
 	private Scanner reader;
 	private HashSet<String> validCommands;
+	private HashSet<String> validCommandsM;
 	
 	public Parser() {
 		validCommands = new HashSet<String>();
+		validCommandsM = new HashSet<String>();
 		reader = new Scanner(System.in);
 		validCommands.add("move");
 		validCommands.add("scan");
@@ -18,6 +20,12 @@ public class Parser {
 		validCommands.add("drop");
 		validCommands.add("quit");
 		validCommands.add("help");
+		
+		validCommandsM.add("up");
+		validCommandsM.add("down");
+		validCommandsM.add("left");
+		validCommandsM.add("right");
+		validCommandsM.add("cancel");
 		
 	}
 	
@@ -37,13 +45,23 @@ public class Parser {
 		String inputLine, inputWord;
 		System.out.print("[> ");
 		inputLine = reader.nextLine();
-		/*
-		Scanner tk = new Scanner(inputLine);
-		if(tk.hasNext()) {
-			inputWord = tk.next();
-		}
-		*/
+		
 		if (isCommand(inputLine)){
+			System.out.println("[< Accepted: "+inputLine);
+			return new Command(inputLine);
+		} else {
+			System.out.println("[< invalid command");
+			return new Command("nothing");
+		}
+	}
+	
+	public Command ParseM() {
+		String inputLine, inputWord;
+		System.out.println("[< What Direction (left,right,up,down):>");
+		System.out.print("[> ");
+		inputLine = reader.nextLine();
+		
+		if (isCommandM(inputLine)){
 			System.out.println("[< Accepted: "+inputLine);
 			return new Command(inputLine);
 		} else {
@@ -54,6 +72,14 @@ public class Parser {
 	
 	public boolean isCommand(String input) {
 		if (validCommands.contains(input)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public boolean isCommandM(String input) {
+		if (validCommandsM.contains(input)) {
 			return true;
 		} else {
 			return false;

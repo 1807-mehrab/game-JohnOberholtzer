@@ -1,15 +1,16 @@
 package derelict;
-import java.util.List;
+import java.util.LinkedList;
 import java.util.HashMap;
 
 public class Room {
 //Container of entities
 	private boolean visited = false;
-	private List<Entity> Entities;
+	private LinkedList<Entity> Entities;
 	private int xloc, yloc, ID;
 	private HashMap<String,Room> Adjacents;
 	
 	public Room(int xloc, int yloc) {
+		Entities = new LinkedList<>();
 		Adjacents = new HashMap<>();
 		this.xloc = xloc;
 		this.yloc = yloc;
@@ -23,12 +24,28 @@ public class Room {
 		return Adjacents.size();
 	}
 	
+	public boolean checkNeighbor(String input) {
+		return Adjacents.containsKey(input);
+	}
+	
+	public Room getNeighbor(String key) {
+		return Adjacents.get(key);
+	}
+	
 	public void setID(int ID) {
 		this.ID = ID;
 	}
 	
 	public int getID() {
 		return ID;
+	}
+	
+	public int getX() {
+		return xloc;
+	}
+	
+	public int getY() {
+		return yloc;
 	}
 	
 	public void addEntity(Entity E) {

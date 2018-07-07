@@ -18,16 +18,28 @@ public class Display {
 			Textblock += "\n";
 			for (int x = 0; x < w; x++) {
 				Room R = boardref.getRoom(x, y);
-				if(R.getID() == 0) {
-					
-					Textblock += "[ ] "; //Regular Room
-				} else if(R.getID() == 1) {
-					Textblock += "{ } "; //Damaged Room
-				} else if(R.getID() == 2) {
-					Textblock += "    "; //Open Space
-				} else {
-					Textblock += "( ) "; //Should not exist
+				String prefix = "";
+				String middle = "";
+				String suffix = "";
+				if(R.getID() == 0) { //Regular Room
+					prefix = "[";
+					suffix = "]"; 
+				} else if(R.getID() == 1) { //Damaged Room
+					prefix = "{";
+					suffix = "}";
+				} else if(R.getID() == 2) { //Open Space
+					prefix = " ";
+					suffix = " ";
+				} else { //Should not exist
+					prefix = "(";
+					suffix = ")"; 
 				}
+				if (R.entityCount() == 0) {
+					middle = " ";
+				} else {
+					middle = "X";
+				}
+				Textblock += prefix + middle + suffix + " ";
 			}
 		}
 		String Userblock ="Health: " + P.getHealth() + "/" + P.getHealthM() +
