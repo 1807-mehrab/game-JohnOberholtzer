@@ -6,18 +6,20 @@ public class Parser {
 	private Scanner reader;
 	private HashSet<String> validCommands;
 	private HashSet<String> validCommandsM;
+	//private HashSet<String> validCommandsR;
 	
 	public Parser() {
 		validCommands = new HashSet<String>();
 		validCommandsM = new HashSet<String>();
+		//validCommandsR = new HashSet<String>();
 		reader = new Scanner(System.in);
 		validCommands.add("move");
 		validCommands.add("scan");
-		validCommands.add("cut");
+		//validCommands.add("cut");
 		validCommands.add("repair");
-		validCommands.add("salvage");
+		//validCommands.add("salvage");
 		validCommands.add("rescue");
-		validCommands.add("drop");
+		//validCommands.add("drop");
 		validCommands.add("quit");
 		validCommands.add("help");
 		
@@ -42,7 +44,7 @@ public class Parser {
 	}
 	
 	public Command Parse() {
-		String inputLine, inputWord;
+		String inputLine;
 		System.out.print("[> ");
 		inputLine = reader.nextLine();
 		
@@ -56,8 +58,8 @@ public class Parser {
 	}
 	
 	public Command ParseM() {
-		String inputLine, inputWord;
-		System.out.println("[< What Direction (left,right,up,down):>");
+		String inputLine;
+		System.out.println("[< What Direction? (left, right, up, down, cancel) >");
 		System.out.print("[> ");
 		inputLine = reader.nextLine();
 		

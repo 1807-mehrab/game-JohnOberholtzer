@@ -1,14 +1,18 @@
-package derelict;
-import java.util.HashMap;;
+package derelict.entities;
+import java.util.HashMap;
+import derelict.Entity;
+import derelict.Equipment;
+import java.lang.reflect.Field;
 
 public class Player extends Entity {
 	
 	private String name;
 	private HashMap<String,Equipment> PlayerEquipment;
-	private int HealthMax,Health, SIMax,SI,OxygenMax,Oxygen,PowerMax,Power,AmmoMax,Ammo;
+	private int OxygenMax,Oxygen,PowerMax,Power;
 	
-	public Player(String username) {
-		name = username;
+	public Player() {
+		Type = 1;
+		Name = "Player";
 		PlayerEquipment = new HashMap<String,Equipment>();
 		PlayerEquipment.put("Suit",new Equipment("Suit", 100));
 		PlayerEquipment.put("Scanner",new Equipment("Scanner", 100));
@@ -19,18 +23,17 @@ public class Player extends Entity {
 		HealthMax = 100;
 		Oxygen = 100;
 		OxygenMax = 100;
-		AmmoMax = 50;
-		Ammo = 10;
+		Power = 5;
+		PowerMax = 5;
+		Hostile = false;
+		Damage = 20;
 	}
 	
-	public void DamageP(int damage) {
-		Health -= damage;
-		if (Health < 0) {Health = 0;}
-	}
-	
-	public void Heal(int val) {
-		Health += val;
-		if (Health < HealthMax) {Health = HealthMax;}
+	public void attack(Entity target) {
+		if (Power > 0) {
+			target.DamageE(Damage);
+			Power -= 1;
+		}
 	}
 	
 	public void DamageG(String ID, int damage) {
@@ -52,15 +55,23 @@ public class Player extends Entity {
 		}
 	}
 	
-	
-	
-	public int getHealth() {
-		return Health;
+	public int getVal(String Fieldname) {
+		try {
+			Field f = this.getClass().getDeclaredField(Fieldname);
+			try {
+				return f.getInt(this);
+			} catch (IllegalAccessException ex) {
+				ex.getMessage();
+				return 0;
+			}
+		} catch (NoSuchFieldException ex) {
+			ex.getMessage();
+			return 0;
+		}
+		
 	}
 	
-	public int getHealthM() {
-		return HealthMax;
-	}
+
 	
 	public int getOxygen() {
 		return Oxygen;
@@ -77,4 +88,26 @@ public class Player extends Entity {
 	public int getPowerM() {
 		return PowerMax;
 	}
+	
+	public void restorePower(int amount) {
+		Power += amount;
+		if (Power > PowerMax) { Power = PowerMax; }
+	}
+	
+	public void drainPower(int amount) {
+		Power -= amount;
+		if (Power < 0) { Power = 0; }
+	}
+	
+	public void restoreOxygen(int amount) {
+		Oxygen += amount;
+		if (Oxygen > OxygenMax) { Oxygen = OxygenMax; }
+	}
+	
+	public void drainOxygen(int amount) {
+		Oxygen -= amount;
+		if (Oxygen < 0) { Oxygen = 0; }
+		if (Oxygen == 0) {System.out.println("[! SUIT OXYGEN DEPLETED !");}
+	}
+	
 }

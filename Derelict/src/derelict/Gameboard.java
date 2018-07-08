@@ -1,6 +1,8 @@
 package derelict;
 import java.util.Random;
 
+import derelict.entities.*;
+
 public class Gameboard {
 //Container of Rooms
 	private int w,h;
@@ -23,6 +25,15 @@ public class Gameboard {
 					Board[x][y].setID(2);
 				} else {
 					Board[x][y].setID(rand.nextInt(3));
+					if (Board[x][y].getID() !=2) {
+						Random rand2 = new Random();
+						int chance = rand2.nextInt(100);
+						if (chance < 25) {
+							Board[x][y].addEntity(new Creature());
+						}else if (chance < 35) {
+							Board[x][y].addEntity(new Civilian());
+						}
+					}
 				}
 				
 			}
@@ -51,11 +62,89 @@ public class Gameboard {
 			rand = new Random();
 			startlocation = Board[rand.nextInt(w)][rand.nextInt(h)];
 		}
+		if (startlocation.entityCount() != 0) {
+			startlocation.removeEntity(startlocation.entityFirst());
+		}
 		
 	}
 	
-	public void iterate() {
-		//Do stuff, move units, etc.
+	public int civCheck() {
+		int count = 0;
+		for (int x = 0; x < w; x++) {
+			for (int y = 0; y < h; y++) {
+				Room R = Board[x][y];
+				if (R.civilianHere()) {count += 1;}	
+			}
+		}
+		return count;
+	}
+	
+	public void resetScan() {
+		for (int x = 0; x < w; x++) {
+			for (int y = 0; y < h; y++) {
+				Board[x][y].setScan(false);
+			}
+		}
+	}
+	
+	public int scanRoom(Room R) {
+		int x = R.getX();
+		int y = R.getY();
+		int count = 0;
+		R.setScan(true);
+		Room Z;
+		if(x > 0) {
+			Z = Board[x-1][y];
+			Z.setScan(true); 
+			count += Z.entityCount();
+			if (y > 0) {
+				Z = Board[x-1][y-1];
+				Z.setScan(true);
+				count += Z.entityCount();
+			}
+			if (y < h-1) {
+				Z = Board[x-1][y+1];
+				Z.setScan(true);
+				count += Z.entityCount();
+			}
+		}
+		if(x < w-1) {
+			Z = Board[x+1][y];
+			Z.setScan(true);
+			count += Z.entityCount();
+			if (y > 0) {
+				Z = Board[x+1][y-1];
+				Z.setScan(true);
+				count += Z.entityCount();
+			}
+			if (y < h-1) {
+				Z = Board[x+1][y+1];
+				Z.setScan(true);
+				count += Z.entityCount();
+			}
+		}
+		if(y > 0) {
+			Z = Board[x][y-1];
+			Z.setScan(true);
+			count += Z.entityCount();
+		}
+		if(y < h-1) {
+			Z = Board[x][y+1];
+			Z.setScan(true);
+			count += Z.entityCount();
+		}
+		return count;
+	}
+	
+	public void iterate(Player P) {
+		for (int x = 0; x < w; x++) {
+			for (int y = 0; y < h; y++) {
+				Room C = Board[x][y];
+				if (C.entityCount() != 0) {
+					C.iterate(P);
+				}
+			}
+		}
 	}
 	
 	public int getW() {
