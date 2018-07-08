@@ -20,29 +20,34 @@ public class Game {
 		player = new Player();
 		gameboard.createEntity(gameboard.startlocation.getX(), gameboard.startlocation.getY(), player);
 		currentRoom = gameboard.startlocation;
-		Cycle(0);
+		parser.Intro();
+		System.out.println("/----------------------------------------------\\");
+		display.Show();
+		parser.Intro2();
+		Cycle(false, false, false, true);
 		System.out.println("[< Available Commands: ");
 		System.out.println(parser.commandList());
 	}
 	
-	public void Cycle(int var) {
-		System.out.println("/----------------------------------------------\\");
-		display.Show();
-		if (var !=3) {
+	public void Cycle(boolean visit, boolean resetscan, boolean iterate, boolean show) {
+		if (show) {System.out.println("/----------------------------------------------\\");}
+		if (iterate) {
 			gameboard.iterate(player);
 		}
-		if (var == 1) {
+		if (resetscan) {
 			gameboard.resetScan();
-			String popups = currentRoom.visit(player);
-			display.showStats(player,gameboard.civCheck());
-			System.out.print(popups);
-		} else if (var == 2 ) {
-			display.showStats(player,gameboard.civCheck());
-		} else {
-			gameboard.resetScan();
-			display.showStats(player,gameboard.civCheck());
 		}
-		display.ShowRoomID(currentRoom);
+		if (show) {
+			display.Show();
+			if (visit) {
+				String popups = currentRoom.visit(player);
+				display.showStats(player,gameboard.civCheck());
+				System.out.print(popups);
+			} else {
+				display.showStats(player,gameboard.civCheck());
+			}
+			display.ShowRoomID(currentRoom);
+		}
 	}
 	
 	public boolean deathcheck() {
@@ -75,27 +80,27 @@ public class Game {
 				parser.close();
 				Quit = true;
 			} else if (C.toString().equals("help")){
-				Cycle(2);
+				Cycle(false, false, false, true);
 				System.out.println("[< Available Commands: ");
 				System.out.println(parser.commandList());
 			} else if (C.toString().equals("move")){
-				Cycle(3);
+				Cycle(false, true, false, true);
 				Command CM = parser.ParseM();
 				if (CM.toString().equals("cancel")){
-					Cycle(0);
+					Cycle(false, true, false, true);
 				} else {
 					String direction = CM.toString();
 					if (currentRoom.checkNeighbor(direction)){ // Can move this way
 						Room targetRoom = currentRoom.getNeighbor(direction);
 						currentRoom.transferEntity(targetRoom, player);
 						currentRoom = targetRoom;
-						Cycle(1);
+						Cycle(true, true, true, true);
 						if (currentRoom.entityCount() > 1) {
 							System.out.println("[! You are not alone !");
 						}
 					
 					} else { //No room that way
-						Cycle(0);
+						Cycle(false, true, false, true);
 						System.out.println("[< You cannot move in that direction.");
 					}
 				}
@@ -103,13 +108,15 @@ public class Game {
 				if(player.getPower() > 0) {
 					int count = gameboard.scanRoom(currentRoom);
 					player.drainPower(1);
-					Cycle(2);
+					Cycle(false, false, false, true);
 					System.out.println("[< Adjacent Rooms Scanned. Lifesigns Detected: " + count);
 				} else {
-					Cycle(0);
+					Cycle(false, false, false, true);
 					System.out.println("[! Not Enough Power: <Scanner> !");
 				}
-				
+			} else if (C.toString().equals("wait")) {
+				Cycle(true, true, true, true);
+				System.out.println("[* Idling *");
 			} else if (C.toString().equals("salvage")) {
 				//Salvage
 			} else if (C.toString().equals("repair")) {
@@ -117,13 +124,21 @@ public class Game {
 			} else if (C.toString().equals("shoot")) {
 				if (player.getPower() != 0) {
 					if (currentRoom.entityCount() > 1) {
-						
+						if(currentRoom.hasEntity("Creature")) {
+							player.attack(currentRoom.getEntity("Creature"));
+							System.out.println("[! Energy Discharge !");
+							Cycle(false,false,false,true);
+							Cycle(true, true, true, false);
+						} else {
+							Cycle(false, false, false, true);
+							System.out.println("[* No Hostiles to Shoot *");
+						}
 					} else {
-						Cycle(0);
+						Cycle(false, false, false, true);
 						System.out.println("[* No Targets to Shoot *");
 					}
 				} else {
-					Cycle(0);
+					Cycle(false, false, false, true);
 					System.out.println("[! Not Enough Power: <Laser Sidearm> !");
 				}
 			} else if (C.toString().equals("drop")) {
@@ -133,10 +148,10 @@ public class Game {
 			} else if (C.toString().equals("rescue")) {
 				if (currentRoom.hasEntity("Civilian")) {
 					currentRoom.removeEntity(currentRoom.getEntity("Civilian"));
-					Cycle(0);
+					Cycle(true, true, true, true);
 					System.out.println("[* Civilian Rescued *");
 				} else {
-					Cycle(0);
+					Cycle(false, false, false, true);
 					System.out.println("[* No Civilians Detected *");	
 				}
 			}
