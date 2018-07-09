@@ -94,7 +94,8 @@ public class Game {
 						Room targetRoom = currentRoom.getNeighbor(direction);
 						currentRoom.transferEntity(targetRoom, player);
 						currentRoom = targetRoom;
-						Cycle(true, true, true, true);
+						Cycle(true, true, false, true);
+						Cycle(false, false, true, false);
 						if (currentRoom.entityCount() > 1) {
 							System.out.println("[! You are not alone !");
 						}

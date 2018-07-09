@@ -7,8 +7,6 @@ public class Main {
 		Runnable D = new DisplayRunnable(G);
 		Thread DisplayThread = new Thread(D);
 		DisplayThread.start();
-
-
 	}
 
 }
@@ -22,15 +20,3 @@ class DisplayRunnable implements Runnable {
 		}
 	}
 }
-
-/*
-class CommandRunnable implements Runnable{
-	Game G;
-	CommandRunnable(Game Gr){G = Gr;}
-	public void run() {
-		while (!G.Quit) {
-			G.Scan();
-		}
-	}	
-}
-*/

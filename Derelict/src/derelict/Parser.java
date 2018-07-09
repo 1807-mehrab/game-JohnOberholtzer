@@ -6,12 +6,12 @@ public class Parser {
 	private Scanner reader;
 	private HashSet<String> validCommands;
 	private HashSet<String> validCommandsM;
-	//private HashSet<String> validCommandsR;
+	private HashSet<String> validCommandsC;
 	
 	public Parser() {
 		validCommands = new HashSet<String>();
 		validCommandsM = new HashSet<String>();
-		//validCommandsR = new HashSet<String>();
+		validCommandsC = new HashSet<String>();
 		reader = new Scanner(System.in);
 		validCommands.add("move");
 		validCommands.add("scan");
@@ -21,7 +21,8 @@ public class Parser {
 		//validCommands.add("salvage");
 		validCommands.add("rescue");
 		//validCommands.add("drop");
-		validCommands.add("search");
+		//validCommands.add("gear");
+		//validCommands.add("search");
 		validCommands.add("quit");
 		validCommands.add("help");
 		validCommands.add("wait");
@@ -81,8 +82,13 @@ public class Parser {
 			System.out.println("[< Accepted: "+inputLine);
 			return new Command(inputLine);
 		} else {
-			System.out.println("[< invalid command");
-			return new Command("nothing");
+			if (isCommand(inputLine.trim())) {
+				System.out.println("[< Accepted: "+inputLine.trim());
+				return new Command(inputLine.trim());
+			} else {
+				System.out.println("[< invalid command");
+				return new Command("nothing");
+			}
 		}
 	}
 	
@@ -96,8 +102,13 @@ public class Parser {
 			System.out.println("[< Accepted: "+inputLine);
 			return new Command(inputLine);
 		} else {
-			System.out.println("[< invalid command");
-			return new Command("nothing");
+			if (isCommand(inputLine.trim())) {
+				System.out.println("[< Accepted: "+inputLine.trim());
+				return new Command(inputLine.trim());
+			} else {
+				System.out.println("[< invalid command");
+				return new Command("nothing");
+			}
 		}
 	}
 	
