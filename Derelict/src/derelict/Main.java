@@ -8,7 +8,6 @@ public class Main {
 		Thread DisplayThread = new Thread(D);
 		DisplayThread.start();
 	}
-
 }
 
 class DisplayRunnable implements Runnable {

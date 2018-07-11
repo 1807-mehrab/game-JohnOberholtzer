@@ -44,6 +44,10 @@ public class Room {
 		scanned = b;
 	}
 	
+	public boolean canPath(Room Target) {
+		return true;
+	}
+	
 	public void iterate(Player P) {
 		List<Entity> killList = new ArrayList<Entity>();
 		for (Entity E : Entities) {
@@ -91,8 +95,11 @@ public class Room {
 				P.restoreOxygen(10); //Sealed Compartment, Restores O2
 				popups += "[* Oxygen Replenishing *\n";
 			}
+		} else  if (ID==1){
+			P.drainOxygen(10); //Hull Breach
+			popups += "[! Oxygen Depleting !\n";
 		} else {
-			P.drainOxygen(10); //Hull Breach or Open Space
+			P.drainOxygen(20); //Open Space
 			popups += "[! Oxygen Depleting !\n";
 		}
 		if (!visited) {
@@ -107,6 +114,13 @@ public class Room {
 	
 	public void addNeighbor(String direction, Room room) {
 		Adjacents.put(direction, room);
+	}
+	
+	public void clear() {
+		ID = 2;
+		Adjacents.clear();
+		Entities.clear();
+		//System.out.println("[! Orphan Room Deleted !");
 	}
 	
 	public int neighborCount() {

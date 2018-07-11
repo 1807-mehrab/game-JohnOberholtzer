@@ -1,6 +1,5 @@
 package derelict;
 import java.util.Random;
-
 import derelict.entities.*;
 
 public class Gameboard {
@@ -37,7 +36,7 @@ public class Gameboard {
 				}
 				
 			}
-		}
+		}		
 		
 		for (int x = 0; x < w; x++) {
 			for (int y = 0; y < h; y++) {
@@ -56,6 +55,8 @@ public class Gameboard {
 				}
 			}
 		}
+		clearOrphans();
+		
 		Random rand = new Random();
 		startlocation = Board[rand.nextInt(w)][rand.nextInt(h)];
 		while ((startlocation.neighborCount() == 0)|(startlocation.getID() != 0)) {
@@ -66,6 +67,22 @@ public class Gameboard {
 			startlocation.removeEntity(startlocation.entityFirst());
 		}
 		
+	}
+	
+	public void clearOrphans() {
+		Room center = Board[w/2][h/2];
+		for (int x = 0; x < w; x++) {
+			for (int y = 0; y < h; y++) {
+				Room R =Board[x][y];
+				if (R != center) {
+					Path RPath = new Path(R,center,this);
+					if (RPath.Length == -1) {
+						R.clear();
+					}
+				}
+				
+			}
+		}
 	}
 	
 	public int civCheck() {
