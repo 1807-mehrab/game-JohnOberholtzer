@@ -40,12 +40,13 @@ public class Game {
 			gameboard.resetScan();
 		}
 		if (show) {
-			display.Show();
 			if (visit) {
 				String popups = currentRoom.visit(player);
+				display.Show();
 				display.showStats(player,gameboard.civCheck());
 				System.out.print(popups);
 			} else {
+				display.Show();
 				display.showStats(player,gameboard.civCheck());
 			}
 			display.ShowRoomID(currentRoom);
@@ -138,7 +139,7 @@ public class Game {
 				if(player.getPower() > 0) {
 					int count = gameboard.scanRoom(currentRoom);
 					player.drainPower(1);
-					Cycle(false, false, true, true);
+					Cycle(true, false, true, true);
 					System.out.println("[< Adjacent Rooms Scanned. Lifesigns Detected: " + count);
 					if (currentRoom.entityCount() > 1) {
 						System.out.println("[< Heat signature detected in close proximity.");

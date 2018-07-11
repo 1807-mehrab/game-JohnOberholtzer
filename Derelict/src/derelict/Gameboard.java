@@ -123,16 +123,16 @@ public class Gameboard {
 		if(x > 0) {
 			Z = Board[x-1][y];
 			Z.setScan(true); 
-			count += Z.entityCount();
+			if (Z.getID() != 2) {count += Z.entityCount();}
 			if (y > 0) {
 				Z = Board[x-1][y-1];
 				Z.setScan(true);
-				count += Z.entityCount();
+				if (Z.getID() != 2) {count += Z.entityCount();}
 			}
 			if (y < h-1) {
 				Z = Board[x-1][y+1];
 				Z.setScan(true);
-				count += Z.entityCount();
+				if (Z.getID() != 2) {count += Z.entityCount();}
 			}
 		}
 		if(x < w-1) {
@@ -142,23 +142,23 @@ public class Gameboard {
 			if (y > 0) {
 				Z = Board[x+1][y-1];
 				Z.setScan(true);
-				count += Z.entityCount();
+				if (Z.getID() != 2) {count += Z.entityCount();}
 			}
 			if (y < h-1) {
 				Z = Board[x+1][y+1];
 				Z.setScan(true);
-				count += Z.entityCount();
+				if (Z.getID() != 2) {count += Z.entityCount();}
 			}
 		}
 		if(y > 0) {
 			Z = Board[x][y-1];
 			Z.setScan(true);
-			count += Z.entityCount();
+			if (Z.getID() != 2) {count += Z.entityCount();}
 		}
 		if(y < h-1) {
 			Z = Board[x][y+1];
 			Z.setScan(true);
-			count += Z.entityCount();
+			if (Z.getID() != 2) {count += Z.entityCount();}
 		}
 		return count;
 	}
