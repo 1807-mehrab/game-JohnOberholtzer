@@ -6,12 +6,12 @@ public class Parser {
 	private Scanner reader;
 	private HashSet<String> validCommands;
 	private HashSet<String> validCommandsM;
-	private HashSet<String> validCommandsC;
+	private HashSet<String> validCommandsM2;
 	
 	public Parser() {
 		validCommands = new HashSet<String>();
 		validCommandsM = new HashSet<String>();
-		validCommandsC = new HashSet<String>();
+		validCommandsM2 = new HashSet<String>();
 		reader = new Scanner(System.in);
 		validCommands.add("move");
 		validCommands.add("scan");
@@ -33,6 +33,11 @@ public class Parser {
 		validCommandsM.add("right");
 		validCommandsM.add("cancel");
 		
+		validCommandsM2.add("move up");
+		validCommandsM2.add("move right");
+		validCommandsM2.add("move left");
+		validCommandsM2.add("move down");
+		
 	}
 	
 	public String commandList() {
@@ -48,7 +53,6 @@ public class Parser {
 	}
 	
 	public void Intro() {
-		String inputLine;
 		System.out.println("[< Welcome to Derelict, a text adventure game. ");
 		System.out.println("   You are the captain of an interstellar salvage tug, and you have come across ");
 		System.out.println("   a derelict vessel. Before you can salvage the wreck, it is your duty to search ");
@@ -57,11 +61,10 @@ public class Parser {
 		
 		System.out.println("[< Enter any input to continue ");
 		System.out.print("[> ");
-		inputLine = reader.nextLine();
+		reader.nextLine();
 	}
 	
 	public void Intro2() {
-		String inputLine;
 		System.out.println("[< Your position is represented by the \"O\" ");
 		System.out.println("   Rescue all civilians to win. Civilians are unconscious and will be stationary. ");
 		System.out.println("   You can move up, down, left or right. Using your scanner or sidearm requires Power. ");
@@ -70,21 +73,20 @@ public class Parser {
 		
 		System.out.println("[< Enter any input to start ");
 		System.out.print("[> ");
-		inputLine = reader.nextLine();
+		reader.nextLine();
 	}
 	
 	public Command Parse() {
-		String inputLine;
 		System.out.print("[> ");
-		inputLine = reader.nextLine();
+		String inputLine = reader.nextLine().toLowerCase().trim();
 		
 		if (isCommand(inputLine)){
 			System.out.println("[< Accepted: "+inputLine);
 			return new Command(inputLine);
 		} else {
-			if (isCommand(inputLine.trim())) {
-				System.out.println("[< Accepted: "+inputLine.trim());
-				return new Command(inputLine.trim());
+			if (isCommandM2(inputLine)){
+				System.out.println("[< Accepted: "+inputLine);
+				return new Command(inputLine);
 			} else {
 				System.out.println("[< invalid command");
 				return new Command("nothing");
@@ -93,22 +95,16 @@ public class Parser {
 	}
 	
 	public Command ParseM() {
-		String inputLine;
 		System.out.println("[< What Direction? (left, right, up, down, cancel) >");
 		System.out.print("[> ");
-		inputLine = reader.nextLine();
+		String inputLine = reader.nextLine().toLowerCase().trim();
 		
 		if (isCommandM(inputLine)){
 			System.out.println("[< Accepted: "+inputLine);
 			return new Command(inputLine);
 		} else {
-			if (isCommand(inputLine.trim())) {
-				System.out.println("[< Accepted: "+inputLine.trim());
-				return new Command(inputLine.trim());
-			} else {
-				System.out.println("[< invalid command");
-				return new Command("nothing");
-			}
+			System.out.println("[< invalid command");
+			return new Command("nothing");
 		}
 	}
 	
@@ -122,6 +118,14 @@ public class Parser {
 	
 	public boolean isCommandM(String input) {
 		if (validCommandsM.contains(input)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public boolean isCommandM2(String input) {
+		if (validCommandsM2.contains(input)) {
 			return true;
 		} else {
 			return false;

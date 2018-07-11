@@ -72,6 +72,23 @@ public class Game {
 		return false;
 	}
 	
+	public void move(String dir) {
+		Cycle(false, true, false, true);
+		String direction = dir.split(" ")[1];
+		if (currentRoom.checkNeighbor(direction)){ // Can move this way
+			Room targetRoom = currentRoom.getNeighbor(direction);
+			currentRoom.transferEntity(targetRoom, player);
+			currentRoom = targetRoom;
+			Cycle(true, true, true, true);					
+			if (currentRoom.entityCount() > 1) {
+				System.out.println("[! You are not alone !");
+			}
+		} else { //No room that way
+			Cycle(false, true, false, true);
+			System.out.println("[< You cannot move in that direction.");
+		}
+	}
+	
 	public void Scan() {
 		if (deathcheck()) {
 			System.out.println("[< GAME OVER: YOU HAVE DIED");
@@ -112,6 +129,11 @@ public class Game {
 						System.out.println("[< You cannot move in that direction.");
 					}
 				}
+			} else if ( (C.toString().equals("move right")) |
+						(C.toString().equals("move left"))	|
+						(C.toString().equals("move up"))	|
+						(C.toString().equals("move down"))	){
+				move(C.toString());
 			} else if (C.toString().equals("scan")) {
 				if(player.getPower() > 0) {
 					int count = gameboard.scanRoom(currentRoom);
