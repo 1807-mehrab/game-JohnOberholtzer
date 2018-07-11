@@ -1,5 +1,6 @@
 package derelict;
 
-public class Item {
+public abstract class Item {
+	String name;
 
 }

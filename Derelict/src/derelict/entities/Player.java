@@ -1,24 +1,16 @@
 package derelict.entities;
 import java.util.HashMap;
 import derelict.Entity;
-import derelict.Equipment;
 import java.lang.reflect.Field;
 
 public class Player extends Entity {
 	
 	private String name;
-	private HashMap<String,Equipment> PlayerEquipment;
 	private int OxygenMax,Oxygen,PowerMax,Power;
 	
 	public Player() {
 		Type = 1;
 		Name = "Player";
-		PlayerEquipment = new HashMap<String,Equipment>();
-		PlayerEquipment.put("Suit",new Equipment("Suit", 100));
-		PlayerEquipment.put("Scanner",new Equipment("Scanner", 100));
-		PlayerEquipment.put("Cutting Torch", new Equipment("Cutting Torch", 100));
-		PlayerEquipment.put("Sidearm", new Equipment("Sidearm", 100));
-		PlayerEquipment.put("Magnetic Boots", new Equipment("Magnetic Boots", 100));
 		Health = 100;
 		HealthMax = 100;
 		Oxygen = 100;
@@ -33,25 +25,6 @@ public class Player extends Entity {
 		if (Power > 0) {
 			target.DamageE(Damage);
 			Power -= 1;
-		}
-	}
-	
-	public void DamageG(String ID, int damage) {
-		if (PlayerEquipment.containsKey(ID)) {
-			Equipment E = PlayerEquipment.get(ID);
-			E.Damage(damage);
-		}
-	}
-	
-	public int EquipmentInt(String ID, int m) {
-		if (PlayerEquipment.containsKey(ID)) {
-			if(m==0){
-				return PlayerEquipment.get(ID).getIntegrity();
-			} else {
-				return PlayerEquipment.get(ID).getIntegrityMax();
-			}
-		} else {
-			return -1;
 		}
 	}
 	
@@ -70,8 +43,6 @@ public class Player extends Entity {
 		}
 		
 	}
-	
-
 	
 	public int getOxygen() {
 		return Oxygen;

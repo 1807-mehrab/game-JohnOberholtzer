@@ -48,7 +48,8 @@ public class Room {
 		return true;
 	}
 	
-	public void iterate(Player P) {
+	public String iterate(Player P) {
+		String output = "";
 		List<Entity> killList = new ArrayList<Entity>();
 		for (Entity E : Entities) {
 			if (E.Hostile == true) {
@@ -60,7 +61,7 @@ public class Room {
 					if (playerHere()) { //In same room as player
 						if (chance < 75) { //75% chance for a creature to attack if in the room with you.
 							E.attack(P);
-							System.out.println("[<! WARNING: SUIT INTEGRITY DAMAGED !");
+							output += "[<! WARNING: SUIT INTEGRITY DAMAGED !\n";
 						}
 					} else { //Chance to move around
 						if (chance < 50) { //50% chance to attempt a movement
@@ -84,8 +85,9 @@ public class Room {
 		}
 		for (Entity E : killList) {
 			removeEntity(E);
-			System.out.println("[! Life Signature Extinguished !");
+			output+=("[! Life Signature Extinguished !\n");
 		}
+		return output;
 	}
 	
 	public String visit(Player P) {

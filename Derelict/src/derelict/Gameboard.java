@@ -12,10 +12,11 @@ public class Gameboard {
 		this.w = w;
 		this.h = h;
 		Board = new Room[w][h];
-		
+		int civcount = 0;
+		Random rand = new Random();
 		for (int x = 0; x < w; x++) {
 			for (int y = 0; y < h; y++) {
-				Random rand = new Random();
+				
 				Board[x][y] = new Room(x,y);
 				
 				if ((x > 3)&&(x<7)&&(y>3)&&(y<7)) {
@@ -25,12 +26,12 @@ public class Gameboard {
 				} else {
 					Board[x][y].setID(rand.nextInt(3));
 					if (Board[x][y].getID() !=2) {
-						Random rand2 = new Random();
-						int chance = rand2.nextInt(100);
+						int chance = rand.nextInt(100);
 						if (chance < 25) {
 							Board[x][y].addEntity(new Creature());
-						}else if (chance < 35) {
+						}else if ((chance < 35)&&(civcount < 4)) {
 							Board[x][y].addEntity(new Civilian());
+							civcount += 1;
 						}
 					}
 				}
@@ -57,7 +58,6 @@ public class Gameboard {
 		}
 		clearOrphans();
 		
-		Random rand = new Random();
 		startlocation = Board[rand.nextInt(w)][rand.nextInt(h)];
 		while ((startlocation.neighborCount() == 0)|(startlocation.getID() != 0)) {
 			rand = new Random();
@@ -67,7 +67,17 @@ public class Gameboard {
 			startlocation.removeEntity(startlocation.entityFirst());
 		}
 		
+		civcount = civCheck();
+		while (civcount < 2) {
+			Room target = Board[rand.nextInt(w)][rand.nextInt(h)];
+			if ((target.getID() != 2)&&(target.entityCount() == 0)&&(target!=startlocation)){
+				target.addEntity(new Civilian());
+				civcount += 1;
+			}
+		}
+		
 	}
+
 	
 	public void clearOrphans() {
 		Room center = Board[w/2][h/2];
@@ -153,15 +163,17 @@ public class Gameboard {
 		return count;
 	}
 	
-	public void iterate(Player P) {
+	public String iterate(Player P) {
+		String output = "";
 		for (int x = 0; x < w; x++) {
 			for (int y = 0; y < h; y++) {
 				Room C = Board[x][y];
 				if (C.entityCount() != 0) {
-					C.iterate(P);
+					output += C.iterate(P);
 				}
 			}
 		}
+		return output;
 	}
 	
 	public int getW() {

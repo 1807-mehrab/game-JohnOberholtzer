@@ -23,6 +23,7 @@ public class Game {
 		parser.Intro();
 		System.out.println("/----------------------------------------------\\");
 		display.Show();
+		display.showStats(player, gameboard.civCheck());
 		parser.Intro2();
 		Cycle(false, false, false, true);
 		System.out.println("[< Available Commands: ");
@@ -31,8 +32,9 @@ public class Game {
 	
 	public void Cycle(boolean visit, boolean resetscan, boolean iterate, boolean show) {
 		if (show) {System.out.println("/----------------------------------------------\\");}
+		String iterationpopups = "";
 		if (iterate) {
-			gameboard.iterate(player);
+			iterationpopups = gameboard.iterate(player);
 		}
 		if (resetscan) {
 			gameboard.resetScan();
@@ -47,7 +49,13 @@ public class Game {
 				display.showStats(player,gameboard.civCheck());
 			}
 			display.ShowRoomID(currentRoom);
+		} else {
+			if (visit) {
+				String popups = currentRoom.visit(player);
+				System.out.print(popups);
+			}
 		}
+		System.out.print(iterationpopups);
 	}
 	
 	public boolean deathcheck() {
@@ -94,8 +102,7 @@ public class Game {
 						Room targetRoom = currentRoom.getNeighbor(direction);
 						currentRoom.transferEntity(targetRoom, player);
 						currentRoom = targetRoom;
-						Cycle(true, true, false, true);
-						Cycle(false, false, true, false);
+						Cycle(true, true, true, true);					
 						if (currentRoom.entityCount() > 1) {
 							System.out.println("[! You are not alone !");
 						}
@@ -109,8 +116,11 @@ public class Game {
 				if(player.getPower() > 0) {
 					int count = gameboard.scanRoom(currentRoom);
 					player.drainPower(1);
-					Cycle(false, false, false, true);
+					Cycle(false, false, true, true);
 					System.out.println("[< Adjacent Rooms Scanned. Lifesigns Detected: " + count);
+					if (currentRoom.entityCount() > 1) {
+						System.out.println("[< Heat signature detected in close proximity.");
+					}
 				} else {
 					Cycle(false, false, false, true);
 					System.out.println("[! Not Enough Power: <Scanner> !");
