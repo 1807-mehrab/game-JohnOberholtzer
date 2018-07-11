@@ -65,7 +65,7 @@ public class Room {
 						}
 					} else { //Chance to move around
 						if (chance < 50) { //50% chance to attempt a movement
-							LinkedList<Room> ValidTargets = new LinkedList<Room>();
+							List<Room> ValidTargets = new ArrayList<Room>();
 							for (Room R : Adjacents.values()) {
 								if (R.entityCount()==0) {
 									ValidTargets.add(R);

@@ -69,7 +69,8 @@ public class Parser {
 		System.out.println("   Rescue all civilians to win. Civilians are unconscious and will be stationary. ");
 		System.out.println("   You can move up, down, left or right. Using your scanner or sidearm requires Power. ");
 		System.out.println("   Power is siphoned from undamaged rooms [ ] upon entering, but can only be done ");
-		System.out.println("   once per room. Damaged compartments { } will deplete your suit Oxygen.");
+		System.out.println("   once per room. Rooms that are undamaged but drained are represented with ( ).");
+		System.out.println("   Damaged compartments { } will deplete your suit Oxygen.");
 		
 		System.out.println("[< Enter any input to start ");
 		System.out.print("[> ");
@@ -103,8 +104,13 @@ public class Parser {
 			System.out.println("[< Accepted: "+inputLine);
 			return new Command(inputLine);
 		} else {
-			System.out.println("[< invalid command");
-			return new Command("nothing");
+			if (isCommandM2(inputLine)) {
+				System.out.println("[< Accepted: "+inputLine);
+				return new Command(inputLine.split(" ")[1]);
+			} else {
+				System.out.println("[< invalid command");
+				return new Command("nothing");
+			}
 		}
 	}
 	
