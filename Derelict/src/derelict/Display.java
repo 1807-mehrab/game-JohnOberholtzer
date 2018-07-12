@@ -26,7 +26,7 @@ public class Display {
 	
 	public void Show() {
 		String Textblock ="";
-		for (int y = h-1; y > 0; y--) {
+		for (int y = h-1; y >= 0; y--) {
 			Textblock += "\n";
 			for (int x = 0; x < w; x++) {
 				Room R = boardref.getRoom(x, y);

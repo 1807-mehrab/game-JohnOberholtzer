@@ -3,14 +3,13 @@ import java.util.*;
 
 public class Path {
 	
-	LinkedList<Room> RoomContainer;
-	Integer Length, orX, orY, dX, dY, mW, mH, Iterations;
-	PathNode[][] NodeArr;
-	PathNode originNode, destNode;
+	private LinkedList<Room> RoomContainer;
+	private Integer Length, mW, mH;
+	private PathNode[][] NodeArr;
+	private PathNode originNode, destNode;
 	
 	public Path(Room origin, Room dest, Gameboard B) {
 		Length = 0;
-		Iterations = 0;
 		mW = B.getW();
 		mH = B.getH();
 		NodeArr = new PathNode[mW][mH];
@@ -51,11 +50,6 @@ public class Path {
 		}
 	
 		Solver(NodeArr);
-		for (int x = 0; x < mW; x++) {
-			for (int y = 0; y < mH; y++) {
-				if(NodeArr[x][y].isChecked()) {Iterations+=1;}
-			}
-		}
 
 		if (destNode.getParent() != null) {
 			PathNode tracer = destNode;
@@ -74,14 +68,14 @@ public class Path {
 		for (int x = 0; x < mW; x++) {
 			for (int y = 0; y < mH; y++) {
 				Nodes[x][y].setChecked(false);
-				Nodes[x][y].globalgoal = Double.POSITIVE_INFINITY;
-				Nodes[x][y].localgoal = Double.POSITIVE_INFINITY;
+				Nodes[x][y].setGlobalGoal(Double.POSITIVE_INFINITY);
+				Nodes[x][y].setLocalGoal(Double.POSITIVE_INFINITY);
 				Nodes[x][y].nullParent();
 			}
 		}
 		PathNode currNode = originNode;
-		currNode.localgoal = 0.0;
-		currNode.globalgoal = distance(originNode,destNode);
+		currNode.setLocalGoal(0.0);
+		currNode.setGlobalGoal(distance(originNode,destNode));
 		LinkedList<PathNode> untested = new LinkedList<PathNode>();
 		untested.add(currNode);
 		while(!untested.isEmpty()&&(currNode!=destNode)) {
@@ -99,11 +93,11 @@ public class Path {
 				if ((!adjNode.isChecked())&&(!adjNode.isBlocked())) {
 					untested.addLast(adjNode);
 				}
-				double pgoal = (currNode.localgoal + distance(currNode,adjNode));
-				if (pgoal < adjNode.localgoal) {
+				double pgoal = (currNode.getLocalGoal() + distance(currNode,adjNode));
+				if (pgoal < adjNode.getLocalGoal()) {
 					adjNode.setParent(currNode);
-					adjNode.localgoal = pgoal;
-					adjNode.globalgoal = (adjNode.localgoal + distance(adjNode, destNode));
+					adjNode.setLocalGoal(pgoal);
+					adjNode.setGlobalGoal(adjNode.getLocalGoal() + distance(adjNode, destNode));
 
 				}
 				
@@ -112,14 +106,18 @@ public class Path {
 		return true;
 	}
 	
+	public int getLength() {
+		return this.Length;
+	}
+	
 	public double distance(PathNode a, PathNode b) {
 		return Math.sqrt((a.getX()-b.getX())*(a.getX()-b.getX()) + (a.getY()-b.getY())*(a.getY()-b.getY()));
 	}
 	
-	public class NodeCompare implements Comparator<PathNode>{
+	private class NodeCompare implements Comparator<PathNode>{
 		@Override
 		public int compare(PathNode a, PathNode b) {
-			return Double.compare(a.globalgoal,b.globalgoal);
+			return Double.compare(a.getGlobalGoal(),b.getGlobalGoal());
 		}
 	}
 }

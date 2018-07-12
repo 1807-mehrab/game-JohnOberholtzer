@@ -86,7 +86,7 @@ public class Gameboard {
 				Room R =Board[x][y];
 				if (R != center) {
 					Path RPath = new Path(R,center,this);
-					if (RPath.Length == -1) {
+					if (RPath.getLength() == -1) {
 						R.clear();
 					}
 				}
