@@ -137,9 +137,9 @@ public class Game {
 				move(C.toString());
 			} else if (C.toString().equals("scan")) {
 				if(player.getPower() > 0) {
-					int count = gameboard.scanRoom(currentRoom);
 					player.drainPower(1);
 					Cycle(true, false, true, true);
+					int count = gameboard.scanRoom(currentRoom);
 					System.out.println("[< Adjacent Rooms Scanned. Lifesigns Detected: " + count);
 					if (currentRoom.entityCount() > 1) {
 						System.out.println("[< Heat signature detected in close proximity.");
