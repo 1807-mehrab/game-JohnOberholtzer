@@ -96,7 +96,7 @@ public class Game {
 			parser.close();
 			Quit = true;
 		} else if (wincheck()) {
-			System.out.println("[< YOU HAVE RESCUED ALL CIVILIANS");
+			System.out.println("[< VICTORY: YOU HAVE RESCUED ALL CIVILIANS!");
 			parser.close();
 			Quit = true;
 		} else {
@@ -138,8 +138,9 @@ public class Game {
 			} else if (C.toString().equals("scan")) {
 				if(player.getPower() > 0) {
 					player.drainPower(1);
-					Cycle(true, false, true, true);
+					Cycle(true, true, true, false);
 					int count = gameboard.scanRoom(currentRoom);
+					Cycle(false, false, false, true);
 					System.out.println("[< Adjacent Rooms Scanned. Lifesigns Detected: " + count);
 					if (currentRoom.entityCount() > 1) {
 						System.out.println("[< Heat signature detected in close proximity.");
@@ -164,8 +165,16 @@ public class Game {
 							Cycle(false,false,false,true);
 							Cycle(true, true, true, false);
 						} else {
-							Cycle(false, false, false, true);
-							System.out.println("[* No Hostiles to Shoot *");
+							if(currentRoom.hasEntity("Civilian")) {
+								System.out.println("[! Energy Discharge !");
+								System.out.println("[% You have Murdered an Innocent. %");
+								System.out.println("[< GAME OVER: YOU ARE A WANTED CRIMINAL");
+								parser.close();
+								Quit = true;
+							} else {
+								Cycle(false, false, false, true);
+								System.out.println("[* No Hostiles to Shoot *");
+							}
 						}
 					} else {
 						Cycle(false, false, false, true);
