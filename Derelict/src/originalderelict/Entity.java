@@ -1,4 +1,4 @@
-package derelict;
+package originalderelict;
 
 public abstract class Entity {
 	public String Name;

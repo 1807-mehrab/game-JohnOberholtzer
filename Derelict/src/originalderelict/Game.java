@@ -1,6 +1,6 @@
-package derelict;
+package originalderelict;
 
-import derelict.entities.Player;
+import originalderelict.entities.Player;
 
 public class Game {
 	private Display display;

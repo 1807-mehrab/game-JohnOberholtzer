@@ -1,10 +1,10 @@
-package derelict;
+package originalderelict;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Random;
 
-import derelict.entities.Player;
+import originalderelict.entities.Player;
 
 import java.util.HashMap;
 

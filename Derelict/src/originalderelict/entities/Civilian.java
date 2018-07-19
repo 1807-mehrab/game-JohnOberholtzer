@@ -1,5 +1,5 @@
-package derelict.entities;
-import derelict.Entity;
+package originalderelict.entities;
+import originalderelict.Entity;
 
 public class Civilian extends Entity {
 	

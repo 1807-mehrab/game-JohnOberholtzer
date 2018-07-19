@@ -1,4 +1,4 @@
-package derelict;
+package originalderelict;
 
 public class Command {
 	private String val;

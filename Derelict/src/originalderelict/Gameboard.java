@@ -1,6 +1,7 @@
-package derelict;
+package originalderelict;
 import java.util.Random;
-import derelict.entities.*;
+
+import originalderelict.entities.*;
 
 public class Gameboard {
 //Container of Rooms

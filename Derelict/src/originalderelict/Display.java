@@ -1,6 +1,6 @@
-package derelict;
+package originalderelict;
 
-import derelict.entities.Player;
+import originalderelict.entities.Player;
 
 public class Display {
 	private Gameboard boardref;

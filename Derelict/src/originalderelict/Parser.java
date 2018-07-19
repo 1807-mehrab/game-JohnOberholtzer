@@ -1,4 +1,4 @@
-package derelict;
+package originalderelict;
 import java.util.Scanner;
 import java.util.HashSet;;
 

@@ -1,6 +1,8 @@
-package derelict.entities;
+package originalderelict.entities;
 import java.util.HashMap;
-import derelict.Entity;
+
+import originalderelict.Entity;
+
 import java.lang.reflect.Field;
 
 public class Player extends Entity {
